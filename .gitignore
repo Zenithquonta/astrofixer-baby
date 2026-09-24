@@ -1,1 +1,3 @@
 AstroFixxer/
+.cache/
+__pycache__/
