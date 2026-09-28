@@ -16,6 +16,18 @@
   <img alt="Licence GPLv3" src="https://img.shields.io/badge/licence-GPLv3-0B1026?style=for-the-badge">
 </p>
 
+<p align="center">
+  <a href="https://github.com/Zenithquonta/astrofixer-baby/releases/download/android-latest/AstroFixxer.apk"><img alt="Download the APK" src="https://img.shields.io/badge/Download-AstroFixxer.apk-E8A33D?style=for-the-badge&logo=android&logoColor=white"></a>
+</p>
+
+## Download
+
+1. On your Android phone (Android 8 or newer), tap **[AstroFixxer.apk](https://github.com/Zenithquonta/astrofixer-baby/releases/download/android-latest/AstroFixxer.apk)**. It is rebuilt automatically whenever the app changes.
+2. Open the downloaded file. If Android asks, allow your browser or Files app to **install unknown apps**.
+3. Open AstroFixxer and allow location, so the sky matches where you are.
+
+New builds install over the old one and keep your lists.
+
 ---
 
 ## How it works
@@ -102,7 +114,21 @@ This repository holds the plan, the fixed web app and the data tools. The Androi
 | UI brief for Stitch | `docs/STITCH_UI_PROMPT.md` |
 | Field test protocol | `docs/FIELD_TEST.md` |
 
-In the Android repository:
+## Build it yourself
+
+You don't need any accounts, keys or secrets. Get the Android app's source from this repository, then build it:
+
+```sh
+git clone https://github.com/Zenithquonta/astrofixer-baby.git
+git clone --branch main astrofixer-baby/handoff/astrofixxer-android.bundle astrofixxer-android
+cd astrofixxer-android     # open this folder in Android Studio and press Run, or use Gradle:
+./gradlew installPreview   # builds the app and installs it on a connected phone (JDK 17 + Android SDK)
+```
+
+AstroFixxer is free software under the GPL v3. You may change it and share your own version, as long as it stays GPLv3 with
+its source available and keeps the credits below. The Android app's `README.md` and `CONTRIBUTING.md` have the details.
+
+Other commands in the Android app:
 
 ```sh
 ./gradlew test assembleDebug                 # JDK 17 and Android SDK 35; APK in app/build/outputs/apk/debug
@@ -116,7 +142,7 @@ Releasing to Google Play (signing, secrets, store listing, privacy policy) is de
 
 GPLv3, as AstroHopper requires. Made for Smart India Hackathon 2025.
 
-- Based on [AstroHopper](https://artyom-beilis.github.io/astrohopper.html) by Artyom Beilis (GPLv3), by way of the AstroFixxer web app.
+- Based on **AstroHopper** by Artyom Beilis (GPLv3): source at [github.com/artyom-beilis/skyhopper](https://github.com/artyom-beilis/skyhopper), app at [artyom-beilis.github.io/astrohopper.html](https://artyom-beilis.github.io/astrohopper.html). AstroFixxer started as a fork of it for Smart India Hackathon 2025, and the pointing, alignment and position maths follow its design.
 - Deep-sky catalogue, names, meteor showers and comet orbits come from Stellarium (GPL-2.0-or-later). The sky cultures come from Stellarium (CC BY-SA 4.0), and the constellation artwork is under the Free Art License. Star positions come from the HYG database (CC BY-SA).
 - The planet series (VSOP87, via vsop87-multilang) and the position reduction (CPReduce) are by Greg Miller and are in the public domain (in the Android app's `astro/vsop87/`).
 - The Android app's golden test values were generated from the web app's own code (`tools/golden/`).

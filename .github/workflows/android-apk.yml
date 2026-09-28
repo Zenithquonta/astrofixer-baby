@@ -1,0 +1,39 @@
+name: Android APK
+
+# Builds the Android app from its saved history (handoff/astrofixxer-android.bundle), runs its tests, and publishes
+# AstroFixxer.apk as a GitHub Release, so anyone can download it from this public repository:
+# https://github.com/Zenithquonta/astrofixer-baby/releases/download/android-latest/AstroFixxer.apk
+on:
+  push:
+    paths:
+      - handoff/astrofixxer-android.bundle
+      - .github/workflows/android-apk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write # to publish the release
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack the Android app
+        run: git clone --branch main handoff/astrofixxer-android.bundle android
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Test and build the APK
+        working-directory: android
+        run: ./gradlew test assemblePreview
+      - name: Publish AstroFixxer.apk
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/preview/app-preview.apk AstroFixxer.apk
+          gh release delete android-latest --cleanup-tag --yes || true
+          gh release create android-latest AstroFixxer.apk --prerelease --target "$GITHUB_SHA" \
+            --title "AstroFixxer for Android (latest build)" \
+            --notes "Built from Android commit $(git -C android rev-parse --short HEAD). On an Android 8+ phone, tap AstroFixxer.apk, open it, and allow installing unknown apps if asked. New builds install over the old one."
