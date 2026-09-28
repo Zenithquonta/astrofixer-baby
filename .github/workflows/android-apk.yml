@@ -22,8 +22,9 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: gradle/actions/setup-gradle@v4
-      # The signing key lives only in the PREVIEW_KEYSTORE_BASE64 / PREVIEW_KEYSTORE_PASSWORD secrets. Without them the app is
-      # still built and tested, but nothing is published, so the public download is always signed with the same private key.
+      # With the PREVIEW_KEYSTORE_BASE64 / PREVIEW_KEYSTORE_PASSWORD secrets, the APK is signed with the permanent private key,
+      # so each download installs over the last. Without them it is signed with the throwaway debug key Gradle creates on this
+      # runner: still private and never reused, but a newer build then needs the old one uninstalled first.
       - name: Restore signing key
         env:
           PREVIEW_KEYSTORE_BASE64: ${{ secrets.PREVIEW_KEYSTORE_BASE64 }}
@@ -32,7 +33,7 @@ jobs:
             echo "$PREVIEW_KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/preview.jks"
             echo "ASTROFIXXER_PREVIEW_KEYSTORE=$RUNNER_TEMP/preview.jks" >> "$GITHUB_ENV"
           else
-            echo "::warning::PREVIEW_KEYSTORE_BASE64 is not set, so the APK is built and tested but not published."
+            echo "::warning::PREVIEW_KEYSTORE_BASE64 is not set: publishing an APK signed with this run's throwaway debug key."
           fi
       - name: Test and build the APK
         working-directory: android
@@ -44,15 +45,24 @@ jobs:
           name: AstroFixxer-apk
           path: android/app/build/outputs/apk/preview/app-preview.apk
       - name: Publish AstroFixxer.apk
-        if: env.ASTROFIXXER_PREVIEW_KEYSTORE != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           cp android/app/build/outputs/apk/preview/app-preview.apk AstroFixxer.apk
+          commit=$(git -C android rev-parse --short HEAD)
+          if [ -n "$ASTROFIXXER_PREVIEW_KEYSTORE" ]; then
+            update="New builds install over the old one and keep your lists."
+          else
+            update="Each build is signed with a new one-off key, so uninstall the old AstroFixxer before installing a newer one."
+          fi
           gh release delete android-latest --cleanup-tag --yes || true
-          gh release create android-latest AstroFixxer.apk --prerelease --target "$GITHUB_SHA" \
-            --title "AstroFixxer for Android (latest build)" \
-            --notes "Built from Android commit $(git -C android rev-parse --short HEAD). On an Android 8+ phone, tap AstroFixxer.apk, open it, and allow installing unknown apps if asked. New builds install over the old one."
+          gh release create android-latest AstroFixxer.apk --latest --target "$GITHUB_SHA" \
+            --title "AstroFixxer for Android" \
+            --notes "Built and tested automatically from Android commit $commit.
+
+          **Install:** on an Android 8+ phone, tap **AstroFixxer.apk** below, open the downloaded file, and allow installing unknown apps if asked. $update
+
+          What changed: see [CHANGELOG.md](https://github.com/$GITHUB_REPOSITORY/blob/$GITHUB_SHA/CHANGELOG.md)."
 
   # Fails the build if a key, token or password is committed.
   secret-scan:
