@@ -30,7 +30,7 @@ New builds install over the old one and keep your lists.
 
 What changed in each update, including every bug fix, is in **[CHANGELOG.md](CHANGELOG.md)**.
 
----
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
 
 ## How it works
 
@@ -43,7 +43,11 @@ AstroFixxer does the hopping maths for you.
 | <img src="docs/readme/pick-star.png" width="250" alt="Picking Vega as the alignment star"> | <img src="docs/readme/guidance.png" width="250" alt="Guidance panel: move up and left to M57"> | <img src="docs/readme/on-target.png" width="250" alt="On target: M57"> |
 | The phone's sensors know roughly where it points. Tapping the star the telescope is really on fixes the rest. | Up/down and left/right, in degrees, until both numbers are near zero. | The Ring Nebula is in the eyepiece. |
 
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
+
 ## What's inside
+
+<p align="center"><img src="docs/readme/planets.gif" width="720" alt="Pixel planets: the Moon cycling through its phases, Jupiter turning with its Great Red Spot, Saturn and its rings, and Mars"></p>
 
 - 🌌 **About 100,000 objects that need no internet**: stars, galaxies, nebulae, clusters, planets, comets and asteroids, built from [Stellarium](https://stellarium.org)'s open catalogues and the HYG star database.
 - 🔭 **Push-to guidance** for manual telescopes, with one-star alignment, a Compass mode, and a Manual mode for phones without a compass.
@@ -56,6 +60,26 @@ AstroFixxer does the hopping maths for you.
 | Events | Time travel | Night mode | हिन्दी |
 |:---:|:---:|:---:|:---:|
 | <img src="docs/readme/events.png" width="190" alt="Events list"> | <img src="docs/readme/time-travel.png" width="190" alt="Time-travel bar"> | <img src="docs/readme/night.png" width="190" alt="Night mode"> | <img src="docs/readme/hindi.png" width="190" alt="Hindi interface"> |
+
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
+
+## A galaxy in your pocket
+
+<img align="left" src="docs/readme/galaxy.gif" width="240" alt="A pixel spiral galaxy, tilted like Andromeda, slowly turning">
+
+**M31, the Andromeda Galaxy**, is about 2.5 million light-years away: the most distant thing most people can see
+with their own eyes. Its light set out before there were humans to look at it.
+
+In a dark sky it's a faint smudge that is easy to miss. AstroFixxer finds it in three steps:
+1. Tap **Find** and type *M31* (or *Andromeda*).
+2. **Align** on a bright star nearby, such as Mirach in Andromeda.
+3. Follow the arrows until both read zero.
+
+The same works for about 94,000 other galaxies, nebulae and star clusters, all stored on the phone.
+
+<br clear="left">
+
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
 
 ## Every dot is something it can find
 
@@ -75,6 +99,8 @@ neighbouring galaxy full of its own clusters.
 No one drew that arc. It appears by itself when you plot the catalogue (`tools/repo-art/sky_map.py` in the Android repository).
 </details>
 
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
+
 ## Meet Hop
 
 <img align="right" src="docs/readme/hop.gif" width="192" alt="Hop the frog blinking on a moon rock">
@@ -89,6 +115,8 @@ line from star to star, and ends up under a faint galaxy while the reticle locks
 
 <br clear="right">
 
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
+
 ## Proof it works
 
 Every push runs:
@@ -100,6 +128,8 @@ Every push runs:
 | `tools/desktop-check` audit | Every screen in English and Hindi, day and night, on 360 dp and 411 dp phones: controls at least 48 dp, no clipped or overlapping text, and colour contrast of at least 4.5:1 by day (3:1 for night mode's dim red). |
 
 The screenshots in this README are produced by those tests.
+
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
 
 ## Where things are
 
@@ -115,6 +145,8 @@ This repository holds the plan, the fixed web app and the data tools. The Androi
 | Handoff log (updated after every change) | `docs/HANDOFF.md` |
 | UI brief for Stitch | `docs/STITCH_UI_PROMPT.md` |
 | Field test protocol | `docs/FIELD_TEST.md` |
+
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
 
 ## Build it yourself
 
@@ -139,6 +171,8 @@ python3 tools/repo-art/make_art.py           # regenerates the pixel art (needs 
 ```
 
 Releasing to Google Play (signing, secrets, store listing, privacy policy) is described in the Android repository's README.
+
+<p align="center"><img src="docs/readme/divider.gif" width="800" alt=""></p>
 
 ## Credits and licence
 
