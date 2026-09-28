@@ -28,6 +28,8 @@
 
 New builds install over the old one and keep your lists.
 
+What changed in each update, including every bug fix, is in **[CHANGELOG.md](CHANGELOG.md)**.
+
 ---
 
 ## How it works
