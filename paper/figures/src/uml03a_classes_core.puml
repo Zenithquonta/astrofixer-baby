@@ -1,0 +1,100 @@
+@startuml
+!include style.puml
+skinparam nodesep 10
+skinparam ranksep 18
+skinparam classFontSize 10
+skinparam classAttributeFontSize 10
+hide empty members
+hide circle
+
+class SkyState {
+  timeMillis: Long
+  lat, lon: Double
+  fovDeg: Double
+  device: DoubleArray
+  mode: PointingMode
+  align: AlignState
+  alignMatrix: DoubleArray?
+  target: SkyObject?
+  telescopeFocalMm, eyepieceFocalMm,\l  eyepieceAfovDeg: Double
+  /eyepieceFovDeg: Double
+  …
+  --
+  camera(): Array<DoubleArray>
+  ray(o: SkyObject): DoubleArray
+  guidance(): Triple<Double, Double, Double>?
+  guidanceEquatorial(): Pair<Double, Double>?
+  resolve(name, catalog): SkyObject?
+  startAlign()
+  cancelAlign()
+  {method} …
+  ..in development..
+  setup: TelescopeSetup
+  pickStar(o), beginCentering(o)
+  dragAdjust(dxPx, dyPx, widthPx, heightPx)
+  confirmAlignment(): Boolean
+  moveHint(): MoveHint?
+}
+
+class Catalog {
+  objects: List<SkyObject>
+  constellations: Map<String,\l  List<Constellation>>
+  boundaries: List<Boundary>
+  --
+  near(ra, dec, radiusDeg,\l  magLimit): List<SkyObject>
+  find(name): SkyObject?
+  search(query, limit): List<SkyObject>
+  constellationAt(ra, dec): String?
+  {static} load(input, dsoMagLimit)
+}
+
+class SkyObject {
+  name: String
+  ra, dec: Double
+  mag: Double?
+  type: String
+  sizeArcmin: Double
+  otherNames: List<String>
+  bv: Double?
+}
+
+class Pointing <<object>> {
+  rayFromPos(raDeg, decDeg, timeMillis,\l  latDeg, lonDeg): DoubleArray
+  rayToRaDec(ray, timeMillis,\l  latDeg, lonDeg): Pair<Double, Double>
+  cameraRays(device, align): Array<DoubleArray>
+  alignMatrix(uncorrected, star): DoubleArray
+  deltaAltAz(fwd, target): Pair<Double, Double>
+  {method} …
+}
+
+enum AlignState {
+  NOT_ALIGNED
+  PICK_STAR
+  ALIGNED
+  CENTER_STAR (in development)
+}
+
+class TelescopeSetup <<in development>> {
+  type: TelescopeType
+  mount: MountType
+  placement: PhonePlacement
+  edge: PhoneEdge
+  eyepieceAngle: EyepieceAngle
+  erecting: Erecting
+  viewRotationDeg: Int
+  viewMirrored: Boolean
+  axis(): PhoneAxis
+  mountingDiffers(other): Boolean
+}
+
+SkyState "1" o-- "0..1" SkyObject : target
+SkyState --> AlignState
+SkyState ..> Pointing
+SkyState ..> Catalog : resolve()
+SkyState "1" *-- "1" TelescopeSetup
+Catalog "1" *-- "*" SkyObject
+SkyState -[hidden]right- Catalog
+Catalog -[hidden]down- SkyObject
+Pointing -[hidden]right- AlignState
+AlignState -[hidden]right- TelescopeSetup
+@enduml

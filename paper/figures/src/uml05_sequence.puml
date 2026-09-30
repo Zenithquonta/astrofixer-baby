@@ -1,0 +1,38 @@
+@startuml
+!include style.puml
+skinparam ParticipantFontSize 11
+skinparam sequenceArrowThickness 1
+skinparam maxMessageSize 120
+skinparam ParticipantPadding 4
+skinparam BoxPadding 2
+hide footbox
+
+actor Observer
+participant "SkyScreen,\nSkyCanvas" as UI
+participant SkyState as S
+participant Pointing as P
+
+Observer -> UI : tap Align
+UI -> S : startAlign()
+note right of S : PICK_STAR
+Observer -> UI : tap a star
+UI -> S : pickStar(star)
+note right of S : refuses Sun, Moon,\nbelow horizon;\nelse CENTER_STAR
+UI --> Observer : centre it in the eyepiece,\nthen drag map under the +
+loop drag the map
+  Observer -> UI : drag
+  UI -> S : dragAdjust(dxPx, dyPx, ...)
+  note right of S : pending adjustment only,\ncalibration unchanged
+  UI -> S : camera()
+  S -> P : cameraRays(device, adjusted)
+end
+Observer -> UI : tap Confirm alignment
+UI -> S : confirmAlignment()
+S -> P : cameraRays(device, null)
+S -> P : alignMatrix(uncorrected, ray(star))
+P --> S : alignMatrix
+S -> P : cameraRays(device, alignMatrix)
+note right of S : axis must be within\n0.01° of the star;\nalignMatrix stored,\nALIGNED
+S --> UI : true
+UI --> Observer : result card: correction\nin degrees, Retry or Done
+@enduml

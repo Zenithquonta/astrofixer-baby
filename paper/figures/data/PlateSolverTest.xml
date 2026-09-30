@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.astrofixxer.astro.PlateSolverTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-09-30T08:58:25.295Z" hostname="vm" time="29.433">
+  <properties/>
+  <testcase name="rollAndMirrorMeanWhatTheyShouldMean" classname="org.astrofixxer.astro.PlateSolverTest" time="0.001"/>
+  <testcase name="wrongScaleHintNeverGivesAWrongAnswer" classname="org.astrofixxer.astro.PlateSolverTest" time="6.867"/>
+  <testcase name="saturatedWhiteIsTooBright" classname="org.astrofixxer.astro.PlateSolverTest" time="0.909"/>
+  <testcase name="detectionTimingLargeImage" classname="org.astrofixxer.astro.PlateSolverTest" time="0.576"/>
+  <testcase name="detectionFindsStarsAndIgnoresHotPixels" classname="org.astrofixxer.astro.PlateSolverTest" time="0.389"/>
+  <testcase name="wideFieldHintOff15Degrees" classname="org.astrofixxer.astro.PlateSolverTest" time="2.01"/>
+  <testcase name="conventionMatchesAstropyWcs" classname="org.astrofixxer.astro.PlateSolverTest" time="0.01"/>
+  <testcase name="wideFieldWithLensDistortion" classname="org.astrofixxer.astro.PlateSolverTest" time="1.531"/>
+  <testcase name="wideFieldBlind" classname="org.astrofixxer.astro.PlateSolverTest" time="1.677"/>
+  <testcase name="twelveDegreeFieldBlind" classname="org.astrofixxer.astro.PlateSolverTest" time="0.666"/>
+  <testcase name="trailedStarsAreReported" classname="org.astrofixxer.astro.PlateSolverTest" time="0.437"/>
+  <testcase name="mediumFieldWithHint" classname="org.astrofixxer.astro.PlateSolverTest" time="1.913"/>
+  <testcase name="wrongAreaNeverGivesAWrongAnswer" classname="org.astrofixxer.astro.PlateSolverTest" time="0.686"/>
+  <testcase name="randomStarFieldsAreNeverSolved" classname="org.astrofixxer.astro.PlateSolverTest" time="6.742"/>
+  <testcase name="wideFieldMirroredBlind" classname="org.astrofixxer.astro.PlateSolverTest" time="1.628"/>
+  <testcase name="blankBlackIsTooFewStars" classname="org.astrofixxer.astro.PlateSolverTest" time="0.142"/>
+  <testcase name="pureNoiseIsTooFewStars" classname="org.astrofixxer.astro.PlateSolverTest" time="0.733"/>
+  <testcase name="eyepieceFieldWithHint" classname="org.astrofixxer.astro.PlateSolverTest" time="1.527"/>
+  <testcase name="verySparseEyepieceFieldsFailOrAreRight" classname="org.astrofixxer.astro.PlateSolverTest" time="0.981"/>
+  <system-out><![CDATA[wide, scale hint x3.00, blind                  1206 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x3.00, hinted                  340 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x0.33, blind                  3050 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x0.33, hinted                  655 ms  Failed NO_MATCH (64 stars)
+eyepiece, scale hint x3.00                      597 ms  Failed NO_MATCH (16 stars)
+eyepiece, scale hint x0.33                      688 ms  Failed NO_MATCH (16 stars)
+saturated white                                 361 ms  Failed IMAGE_TOO_BRIGHT (0 stars)
+washed-out bright sky                           404 ms  Failed IMAGE_TOO_BRIGHT (19 stars)
+detection 1600x1200: 10 stars in 448 ms
+detection: 149 catalogue stars in frame, 149 found, median centroid error 0.12 px, 148 detections, 285 ms (1200x900)
+wide 60x45 hint #0 (160,6)                      282 ms  Solved m=56 rms=32.55" fa=1.0e-122  centre err 6.6"  roll err 0.000 deg  scale err 0.001%
+wide 60x45 hint #1 (284,-53)                    354 ms  Solved m=55 rms=34.17" fa=5.4e-119  centre err 1.3"  roll err 0.001 deg  scale err 0.003%
+wide 60x45 hint #2 (312,49)                     183 ms  Solved m=57 rms=32.91" fa=3.5e-122  centre err 0.7"  roll err 0.003 deg  scale err 0.002%
+wide 60x45 hint #3 (276,-4)                     162 ms  Solved m=56 rms=59.70" fa=1.0e-124  centre err 7.7"  roll err 0.004 deg  scale err 0.002%
+wide 60x45 hint #4 (193,27)                     423 ms  Solved m=56 rms=31.67" fa=2.9e-124  centre err 6.1"  roll err 0.002 deg  scale err 0.001%
+wide, 1% corner distortion #0                   524 ms  Solved m=55 rms=129.51" fa=9.9e-118  centre err 25.4"  roll err 0.004 deg  scale err 0.419%
+wide, -1% corner distortion #1                  217 ms  Solved m=57 rms=140.42" fa=6.6e-127  centre err 40.3"  roll err 0.007 deg  scale err 0.431%
+wide, 2% corner distortion #2                   155 ms  Solved m=56 rms=230.83" fa=1.4e-121  centre err 15.0"  roll err 0.003 deg  scale err 0.803%
+wide, -2% corner distortion #3                  158 ms  Solved m=53 rms=237.05" fa=1.6e-112  centre err 44.2"  roll err 0.004 deg  scale err 0.764%
+wide 60x45 blind #0 (160,6)                     201 ms  Solved m=56 rms=32.55" fa=2.6e-121  centre err 6.6"  roll err 0.000 deg  scale err 0.001%
+wide 60x45 blind #1 (284,-53)                   320 ms  Solved m=55 rms=74.66" fa=1.9e-113  centre err 11.2"  roll err 0.004 deg  scale err 0.010%
+wide 60x45 blind #2 (312,49)                    154 ms  Solved m=57 rms=23.91" fa=1.5e-126  centre err 3.8"  roll err 0.001 deg  scale err 0.002%
+wide 60x45 blind #3 (276,-4)                    168 ms  Solved m=56 rms=64.23" fa=2.2e-120  centre err 10.1"  roll err 0.006 deg  scale err 0.006%
+wide 60x45 blind #4 (193,27)                    173 ms  Solved m=56 rms=29.46" fa=3.9e-119  centre err 4.5"  roll err 0.002 deg  scale err 0.001%
+12 degree field blind #0                        305 ms  Solved m=16 rms=6.09" fa=7.1e-42  centre err 1.1"  roll err 0.000 deg  scale err 0.003%
+12 degree field blind #1                        172 ms  Solved m=26 rms=5.31" fa=2.1e-68  centre err 0.7"  roll err 0.001 deg  scale err 0.008%
+trailed stars (25 px streaks)                   216 ms  Failed STARS_TRAILED (80 stars)
+medium 5 deg with hint #0                       551 ms  Solved m=50 rms=2.04" fa=8.8e-118  centre err 0.1"  roll err 0.001 deg  scale err 0.002%
+medium 5 deg with hint #1                       325 ms  Solved m=57 rms=4.36" fa=4.9e-133  centre err 0.6"  roll err 0.003 deg  scale err 0.002%
+medium 5 deg with hint #2                       276 ms  Solved m=57 rms=4.27" fa=5.5e-130  centre err 0.5"  roll err 0.002 deg  scale err 0.001%
+wide, hint 70 deg away (radius 10)              181 ms  Failed NO_MATCH (133 stars)
+eyepiece, hint 5 deg away (radius 2)            262 ms  Failed NO_MATCH (14 stars)
+random stars, wide blind #0                     925 ms  Failed NO_MATCH (297 stars)
+random stars, wide hinted #0                    212 ms  Failed NO_MATCH (297 stars)
+random stars, wide blind #1                    1047 ms  Failed NO_MATCH (309 stars)
+random stars, wide hinted #1                    237 ms  Failed NO_MATCH (309 stars)
+random stars, wide blind #2                    1209 ms  Failed NO_MATCH (304 stars)
+random stars, wide hinted #2                    224 ms  Failed NO_MATCH (304 stars)
+random stars, wide blind #3                    1150 ms  Failed NO_MATCH (307 stars)
+random stars, wide hinted #3                    184 ms  Failed NO_MATCH (307 stars)
+random stars, eyepiece #0                       229 ms  Failed NO_MATCH (34 stars)
+random stars, eyepiece #1                       194 ms  Failed NO_MATCH (41 stars)
+random stars, eyepiece #2                       213 ms  Failed NO_MATCH (35 stars)
+wide 60x45 mirrored #0 (160,6)                  236 ms  Solved m=56 rms=31.87" fa=4.9e-121  centre err 4.0"  roll err 0.003 deg  scale err 0.004%
+wide 60x45 mirrored #1 (284,-53)                193 ms  Solved m=55 rms=80.27" fa=3.2e-113  centre err 11.0"  roll err 0.005 deg  scale err 0.006%
+wide 60x45 mirrored #2 (312,49)                 163 ms  Solved m=57 rms=24.25" fa=1.6e-126  centre err 3.5"  roll err 0.002 deg  scale err 0.002%
+wide 60x45 mirrored #3 (276,-4)                 181 ms  Solved m=56 rms=62.00" fa=3.1e-120  centre err 6.3"  roll err 0.004 deg  scale err 0.005%
+wide 60x45 mirrored #4 (193,27)                 234 ms  Solved m=56 rms=35.80" fa=2.2e-119  centre err 2.6"  roll err 0.002 deg  scale err 0.003%
+blank black                                     103 ms  Failed TOO_FEW_STARS (0 stars)
+pure noise (wide)                               252 ms  Failed TOO_FEW_STARS (1 stars)
+pure noise (eyepiece circle)                    180 ms  Failed TOO_FEW_STARS (0 stars)
+eyepiece 1 deg #0 (13 cat stars, roll 0)        178 ms  Solved m=12 rms=0.65" fa=1.4e-32  centre err 0.1"  roll err 0.008 deg  scale err 0.010%
+eyepiece 1 deg #1 (13 cat stars, roll 137)      173 ms  Solved m=9 rms=0.91" fa=2.2e-29  centre err 0.5"  roll err 0.002 deg  scale err 0.029%
+eyepiece 1 deg #2 (16 cat stars, roll 20 mirrored)    190 ms  Solved m=13 rms=0.41" fa=2.2e-41  centre err 0.1"  roll err 0.006 deg  scale err 0.007%
+eyepiece 1 deg #3 (13 cat stars, roll 250 mirrored)    171 ms  Solved m=11 rms=0.40" fa=1.2e-32  centre err 0.1"  roll err 0.001 deg  scale err 0.008%
+eyepiece 1 deg #4 (8 cat stars, roll 75)        259 ms  Solved m=6 rms=0.33" fa=1.8e-20  centre err 0.3"  roll err 0.006 deg  scale err 0.022%
+very sparse eyepiece #0 (6 cat stars)           203 ms  Failed NO_MATCH (7 stars)
+very sparse eyepiece #1 (4 cat stars)           221 ms  Failed NO_MATCH (6 stars)
+very sparse eyepiece #2 (6 cat stars)           229 ms  Failed NO_MATCH (7 stars)
+=== plate solver summary: 57 solves, 0 false positives ===
+wide, scale hint x3.00, blind                  1206 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x3.00, hinted                  340 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x0.33, blind                  3050 ms  Failed NO_MATCH (64 stars)
+wide, scale hint x0.33, hinted                  655 ms  Failed NO_MATCH (64 stars)
+eyepiece, scale hint x3.00                      597 ms  Failed NO_MATCH (16 stars)
+eyepiece, scale hint x0.33                      688 ms  Failed NO_MATCH (16 stars)
+saturated white                                 361 ms  Failed IMAGE_TOO_BRIGHT (0 stars)
+washed-out bright sky                           404 ms  Failed IMAGE_TOO_BRIGHT (19 stars)
+detection 1600x1200: 10 stars in 448 ms
+detection: 149 catalogue stars in frame, 149 found, median centroid error 0.12 px, 148 detections, 285 ms (1200x900)
+wide 60x45 hint #0 (160,6)                      282 ms  Solved m=56 rms=32.55" fa=1.0e-122  centre err 6.6"  roll err 0.000 deg  scale err 0.001%
+wide 60x45 hint #1 (284,-53)                    354 ms  Solved m=55 rms=34.17" fa=5.4e-119  centre err 1.3"  roll err 0.001 deg  scale err 0.003%
+wide 60x45 hint #2 (312,49)                     183 ms  Solved m=57 rms=32.91" fa=3.5e-122  centre err 0.7"  roll err 0.003 deg  scale err 0.002%
+wide 60x45 hint #3 (276,-4)                     162 ms  Solved m=56 rms=59.70" fa=1.0e-124  centre err 7.7"  roll err 0.004 deg  scale err 0.002%
+wide 60x45 hint #4 (193,27)                     423 ms  Solved m=56 rms=31.67" fa=2.9e-124  centre err 6.1"  roll err 0.002 deg  scale err 0.001%
+wide, 1% corner distortion #0                   524 ms  Solved m=55 rms=129.51" fa=9.9e-118  centre err 25.4"  roll err 0.004 deg  scale err 0.419%
+wide, -1% corner distortion #1                  217 ms  Solved m=57 rms=140.42" fa=6.6e-127  centre err 40.3"  roll err 0.007 deg  scale err 0.431%
+wide, 2% corner distortion #2                   155 ms  Solved m=56 rms=230.83" fa=1.4e-121  centre err 15.0"  roll err 0.003 deg  scale err 0.803%
+wide, -2% corner distortion #3                  158 ms  Solved m=53 rms=237.05" fa=1.6e-112  centre err 44.2"  roll err 0.004 deg  scale err 0.764%
+wide 60x45 blind #0 (160,6)                     201 ms  Solved m=56 rms=32.55" fa=2.6e-121  centre err 6.6"  roll err 0.000 deg  scale err 0.001%
+wide 60x45 blind #1 (284,-53)                   320 ms  Solved m=55 rms=74.66" fa=1.9e-113  centre err 11.2"  roll err 0.004 deg  scale err 0.010%
+wide 60x45 blind #2 (312,49)                    154 ms  Solved m=57 rms=23.91" fa=1.5e-126  centre err 3.8"  roll err 0.001 deg  scale err 0.002%
+wide 60x45 blind #3 (276,-4)                    168 ms  Solved m=56 rms=64.23" fa=2.2e-120  centre err 10.1"  roll err 0.006 deg  scale err 0.006%
+wide 60x45 blind #4 (193,27)                    173 ms  Solved m=56 rms=29.46" fa=3.9e-119  centre err 4.5"  roll err 0.002 deg  scale err 0.001%
+12 degree field blind #0                        305 ms  Solved m=16 rms=6.09" fa=7.1e-42  centre err 1.1"  roll err 0.000 deg  scale err 0.003%
+12 degree field blind #1                        172 ms  Solved m=26 rms=5.31" fa=2.1e-68  centre err 0.7"  roll err 0.001 deg  scale err 0.008%
+trailed stars (25 px streaks)                   216 ms  Failed STARS_TRAILED (80 stars)
+medium 5 deg with hint #0                       551 ms  Solved m=50 rms=2.04" fa=8.8e-118  centre err 0.1"  roll err 0.001 deg  scale err 0.002%
+medium 5 deg with hint #1                       325 ms  Solved m=57 rms=4.36" fa=4.9e-133  centre err 0.6"  roll err 0.003 deg  scale err 0.002%
+medium 5 deg with hint #2                       276 ms  Solved m=57 rms=4.27" fa=5.5e-130  centre err 0.5"  roll err 0.002 deg  scale err 0.001%
+wide, hint 70 deg away (radius 10)              181 ms  Failed NO_MATCH (133 stars)
+eyepiece, hint 5 deg away (radius 2)            262 ms  Failed NO_MATCH (14 stars)
+random stars, wide blind #0                     925 ms  Failed NO_MATCH (297 stars)
+random stars, wide hinted #0                    212 ms  Failed NO_MATCH (297 stars)
+random stars, wide blind #1                    1047 ms  Failed NO_MATCH (309 stars)
+random stars, wide hinted #1                    237 ms  Failed NO_MATCH (309 stars)
+random stars, wide blind #2                    1209 ms  Failed NO_MATCH (304 stars)
+random stars, wide hinted #2                    224 ms  Failed NO_MATCH (304 stars)
+random stars, wide blind #3                    1150 ms  Failed NO_MATCH (307 stars)
+random stars, wide hinted #3                    184 ms  Failed NO_MATCH (307 stars)
+random stars, eyepiece #0                       229 ms  Failed NO_MATCH (34 stars)
+random stars, eyepiece #1                       194 ms  Failed NO_MATCH (41 stars)
+random stars, eyepiece #2                       213 ms  Failed NO_MATCH (35 stars)
+wide 60x45 mirrored #0 (160,6)                  236 ms  Solved m=56 rms=31.87" fa=4.9e-121  centre err 4.0"  roll err 0.003 deg  scale err 0.004%
+wide 60x45 mirrored #1 (284,-53)                193 ms  Solved m=55 rms=80.27" fa=3.2e-113  centre err 11.0"  roll err 0.005 deg  scale err 0.006%
+wide 60x45 mirrored #2 (312,49)                 163 ms  Solved m=57 rms=24.25" fa=1.6e-126  centre err 3.5"  roll err 0.002 deg  scale err 0.002%
+wide 60x45 mirrored #3 (276,-4)                 181 ms  Solved m=56 rms=62.00" fa=3.1e-120  centre err 6.3"  roll err 0.004 deg  scale err 0.005%
+wide 60x45 mirrored #4 (193,27)                 234 ms  Solved m=56 rms=35.80" fa=2.2e-119  centre err 2.6"  roll err 0.002 deg  scale err 0.003%
+blank black                                     103 ms  Failed TOO_FEW_STARS (0 stars)
+pure noise (wide)                               252 ms  Failed TOO_FEW_STARS (1 stars)
+pure noise (eyepiece circle)                    180 ms  Failed TOO_FEW_STARS (0 stars)
+eyepiece 1 deg #0 (13 cat stars, roll 0)        178 ms  Solved m=12 rms=0.65" fa=1.4e-32  centre err 0.1"  roll err 0.008 deg  scale err 0.010%
+eyepiece 1 deg #1 (13 cat stars, roll 137)      173 ms  Solved m=9 rms=0.91" fa=2.2e-29  centre err 0.5"  roll err 0.002 deg  scale err 0.029%
+eyepiece 1 deg #2 (16 cat stars, roll 20 mirrored)    190 ms  Solved m=13 rms=0.41" fa=2.2e-41  centre err 0.1"  roll err 0.006 deg  scale err 0.007%
+eyepiece 1 deg #3 (13 cat stars, roll 250 mirrored)    171 ms  Solved m=11 rms=0.40" fa=1.2e-32  centre err 0.1"  roll err 0.001 deg  scale err 0.008%
+eyepiece 1 deg #4 (8 cat stars, roll 75)        259 ms  Solved m=6 rms=0.33" fa=1.8e-20  centre err 0.3"  roll err 0.006 deg  scale err 0.022%
+very sparse eyepiece #0 (6 cat stars)           203 ms  Failed NO_MATCH (7 stars)
+very sparse eyepiece #1 (4 cat stars)           221 ms  Failed NO_MATCH (6 stars)
+very sparse eyepiece #2 (6 cat stars)           229 ms  Failed NO_MATCH (7 stars)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

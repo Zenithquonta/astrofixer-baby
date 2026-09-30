@@ -1,0 +1,94 @@
+@startuml
+!include style.puml
+skinparam nodesep 10
+skinparam ranksep 20
+skinparam classFontSize 10
+skinparam classAttributeFontSize 10
+hide empty members
+hide circle
+
+class PlateSolver <<object>> {
+  detectStars(img: GrayImage): List<DetectedStar>
+  solve(img: GrayImage, hints: SolveHints,\l  stars: StarSource): SolveResult
+}
+
+class GrayImage {
+  width, height: Int
+  pixels: FloatArray
+}
+
+class DetectedStar {
+  x, y: Double
+  flux: Double
+  elongation: Double
+  sigma: Double
+}
+
+class SolveHints {
+  scaleMinDegPerPx: Double
+  scaleMaxDegPerPx: Double
+  raDeg, decDeg: Double?
+  searchRadiusDeg: Double
+}
+
+abstract class SolveResult <<sealed>>
+
+class Solved {
+  raDeg, decDeg: Double
+  rollDeg, scaleDegPerPx: Double
+  mirrored: Boolean
+  matchedStars: Int
+  rmsArcsec: Double
+  falseAlarmProbability: Double
+  pixelToRaDec(x, y): Pair<Double, Double>
+  raDecToPixel(ra, dec): Pair<Double, Double>?
+}
+
+class Failed {
+  reason: Reason
+  detectedStars: Int
+}
+
+enum Reason {
+  TOO_FEW_STARS
+  IMAGE_TOO_BRIGHT
+  STARS_TRAILED
+  NO_MATCH
+}
+
+interface StarSource {
+  cone(raDeg, decDeg, radiusDeg,\l  magLimit): List<SkyStar>
+}
+
+class SkyStar {
+  raDeg, decDeg, mag: Double
+}
+
+class ListStars
+class CatalogStars {
+  CatalogStars(catalog: Catalog)
+}
+class SolverStars {
+  count: Int
+  magLimit: Double
+  {static} load(input): SolverStars
+}
+class StarDetector <<internal object>> {
+  detect(img: GrayImage): Detection
+}
+
+PlateSolver ..> GrayImage
+PlateSolver ..> SolveHints
+PlateSolver ..> StarSource
+PlateSolver ..> StarDetector
+PlateSolver ..> SolveResult
+StarDetector ..> DetectedStar
+SolveResult <|-- Solved
+SolveResult <|-- Failed
+Failed --> Reason
+StarSource ..> SkyStar
+StarSource <|.. ListStars
+StarSource <|.. CatalogStars
+StarSource <|.. SolverStars
+PlateSolver -[hidden]right- StarDetector
+@enduml

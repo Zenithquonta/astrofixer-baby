@@ -1,0 +1,58 @@
+@startuml
+!include style.puml
+skinparam nodesep 8
+skinparam ranksep 18
+skinparam usecase {
+  FontSize 10
+}
+<style>
+usecase {
+  .dev {
+    LineStyle 5
+  }
+}
+</style>
+
+actor "Observer" as O
+
+rectangle "AstroFixxer" {
+  usecase "Find object\nor set target" as U1
+  usecase "Follow guidance\nto target" as U2
+  usecase "Align on star" as U3 <<dev>>
+  usecase "Plate-solve\nwith camera" as U5 <<dev>>
+  usecase "Set up telescope\nand phone" as U4 <<dev>>
+  usecase "Read object info" as U7
+  usecase "Manage watch lists\nand own objects" as U8
+  usecase "Browse events\nand Tonight" as U6
+  usecase "Ask AstroGuide\n(voice)" as U9
+  usecase "Time travel" as U10
+  usecase "Night mode and\nsky display" as U11
+  usecase "Set place" as U12
+  U1 -[hidden]right- U2
+  U2 -[hidden]right- U3
+  U3 -[hidden]right- U5
+  U4 -[hidden]right- U7
+  U7 -[hidden]right- U8
+  U8 -[hidden]right- U6
+  U9 -[hidden]right- U10
+  U10 -[hidden]right- U11
+  U11 -[hidden]right- U12
+  U1 -[hidden]down- U4
+  U4 -[hidden]down- U9
+}
+
+O -down-> U1
+O --> U2
+O --> U3
+O --> U5
+O --> U4
+O --> U7
+O --> U8
+O --> U6
+O --> U9
+O --> U10
+O --> U11
+O --> U12
+U2 ..> U1 : <<include>>
+U5 ..> U3 : <<extend>>
+@enduml

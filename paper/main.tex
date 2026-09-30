@@ -8,6 +8,14 @@
 \usepackage{url}
 \usepackage[hidelinks]{hyperref}
 
+% Many figures: let floats fill the top of a page.
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\dblfloatpagefraction}{0.6}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\floatpagefraction}{0.7}
+\setcounter{dbltopnumber}{3}
+\setcounter{topnumber}{3}
+
 \begin{document}
 
 \title{AstroFixxer: An Offline Smartphone Push-To Guide\\with On-Device Plate Solving for Small Telescopes}
@@ -24,6 +32,7 @@ kushmodi13@gmail.com}}
 \input{sections/1_introduction}
 \input{sections/2_related_work}
 \input{sections/3_system}
+\input{sections/3b_design}
 \input{sections/4_review}
 \input{sections/5_conclusion}
 \input{sections/6_acknowledgment}
