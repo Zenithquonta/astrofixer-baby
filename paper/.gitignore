@@ -6,3 +6,4 @@
 *.bbl
 *.blg
 main.pdf
+__pycache__/
