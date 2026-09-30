@@ -13,3 +13,6 @@ astrofixxer-android/
 .env.*
 google-services.json
 secrets.properties
+
+# The research paper is kept locally only, never pushed (owner request)
+paper/
