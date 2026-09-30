@@ -1,0 +1,63 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Phone-sensor push-to applications}
+
+AstroHopper by Artyom Beilis is a free progressive web application released under the GPLv3~\cite{astrohopper}. Its author describes it as digital setting circles implemented in a smartphone. The phone is attached to the tube with its top edge pointing along the optical axis. The observer centres a known star, presses Align, waits about three seconds for the sensors to settle, and then moves the telescope until the displayed altitude and azimuth differences reach zero. The app needs a gyroscope and a gravity sensor; the compass is optional, and a manual azimuth mode covers phones without one. It works offline once cached and offers watch lists, a night mode and user-defined objects. AstroFixxer is a derivative of this code and keeps its licence.
+
+SkEye is an Android planetarium with a push-to mode~\cite{skeye}. In its ``indirect mode'' the observer points the telescope at a known object and tells the app what it is; the app stores the angular offset between the phone and the tube and then follows the phone's compass, accelerometer and gyroscope. SkEye comes in a free Basic and a paid Pro version.
+
+Both apps share the same weak point. The alignment offset is correct only while the sensors stay calibrated, and a magnetometer next to a steel tube or a metal mount is easily disturbed. Neither app can check its own pointing against the sky.
+
+Sky Map (formerly Google Sky Map) is an open-source Android sky viewer that uses the same sensors to show the part of the sky the phone points at~\cite{skymap}. It shipped on the first Android phones, was open-sourced in 2012, and the current rewrite is GPLv3. It is not designed to be mounted on a telescope, but it is the best-known free example of sensor-driven sky display on Android.
+
+\subsection{Camera-based pointing}
+
+Celestron's StarSense Explorer holds the phone in a dock above a small mirror, so the rear camera sees the sky the telescope points at~\cite{starsense}. The companion app plate-solves the camera image with a ``lost in space'' algorithm to find where the telescope points. Celestron says this was the first app to use plate solving for this purpose and that the technology is patented. The app works only with the StarSense Explorer telescopes that include the dock.
+
+PiFinder is open-source hardware and software built around a Raspberry Pi, the Raspberry Pi HQ camera and a small display~\cite{pifinder}. It solves the sky image up to 20 times a second and uses an accelerometer between exposures to update the chart and the push-to directions. It needs no alignment and no encoders, and it offers a catalogue of about 150,000 objects. Its plate solving uses the Cedar Detect and Cedar Solve libraries, which descend from tetra3.
+
+These two systems show what a camera adds: the pointing is measured, not inferred from drifting sensors. Both need dedicated hardware: a dock tied to one telescope range, or a separate computer and camera.
+
+\subsection{Planetarium software with telescope control}
+
+Stellarium is a GPL desktop planetarium used both by amateurs and in cultural-astronomy research~\cite{zotti2021}. It includes a telescope control plugin for motorised mounts, and its catalogues, sky cultures and star files are published with the source. AstroFixxer takes all of its offline sky data from Stellarium. SkySafari is a commercial planetarium for phones and tablets~\cite{skysafari}. It connects to digital setting circle encoders and GoTo mounts, draws the telescope's field of view on the chart, and relies on the encoders for pointing.
+
+\subsection{Plate-solving and star-identification algorithms}
+
+Astrometry.net solves an image with no prior knowledge of where it points or of its scale~\cite{lang2010}. It detects sources, forms geometric hashes of groups of four or five stars, looks them up in pre-built index files, and accepts a hypothesis only if it passes a Bayesian decision test against the null hypothesis that the matches are chance. Covering a wide range of image scales needs large index files, which suits a desktop or a server better than a phone.
+
+Tetra identifies stars from a single database access by storing star patterns in a directly addressed hash table~\cite{tetra2017}. It was designed for spacecraft star trackers, where the field of view is fixed and known, and it won the student competition at the 2017 Small Satellite Conference. Its open-source Python descendant tetra3 underlies the libraries used by PiFinder.
+
+ASTAP is a free, open-source stacking program with a fast local plate solver~\cite{astap}. It solves FITS, raw and common image formats on desktop systems and the Raspberry Pi against downloadable star databases, which are offered at several star densities.
+
+Marbel, Ben-Moshe and Yozevitch showed that a star tracker can run on a commercial smartphone and recover the phone's global orientation from its own camera~\cite{marbel2020}. Their target was the orientation of drones and nano-satellites, not telescope pointing, but the work shows that phone cameras detect enough stars for pattern matching.
+
+\subsection{Summary}
+
+Table~\ref{tab:compare} compares the tools. The free phone apps need no hardware but cannot verify their pointing. The camera systems measure pointing but need a dock or a separate computer. The solvers are general tools for desktops, servers or spacecraft, not for a phone at the eyepiece. No free tool in this review combines sensor push-to, camera plate solving on the phone itself, and offline operation. That gap is the one AstroFixxer targets.
+
+\begin{table*}[t]
+\centering
+\caption{Push-to tools and plate solvers reviewed in Section~\ref{sec:related}}
+\label{tab:compare}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}l l X l l l@{}}
+\toprule
+Tool & Platform & Pointing from & Extra hardware & Offline & Source \\
+\midrule
+AstroHopper~\cite{astrohopper} & Web app (PWA) & Phone sensors, one-star alignment & None & Yes, once cached & GPLv3 \\
+SkEye~\cite{skeye} & Android & Phone sensors, object offset & None & Yes & Not published \\
+Sky Map~\cite{skymap} & Android & Phone sensors (sky viewer only) & None & Yes & Apache 2.0 / GPLv3 \\
+StarSense Explorer~\cite{starsense} & iOS, Android & Phone camera, plate solving & Dock and mirror & Yes & Proprietary, patented \\
+PiFinder~\cite{pifinder} & Raspberry Pi & Camera plate solving + accelerometer & Pi, camera, display & Yes & Open source \\
+SkySafari~\cite{skysafari} & iOS, Android & Encoders or GoTo mount & Encoders or mount & Yes & Proprietary \\
+Stellarium~\cite{zotti2021} & Desktop & Mount control plugin & Motorised mount & Yes & GPL \\
+Astrometry.net~\cite{lang2010} & Server, desktop & Blind plate solving & Camera & With local index & Open source \\
+ASTAP~\cite{astap} & Desktop, Pi & Plate solving & Camera & Yes & Open source \\
+\midrule
+AstroFixxer (this work) & Android & Phone sensors, star alignment, on-phone plate solving & None & Yes & GPLv3 \\
+\bottomrule
+\end{tabularx}
+\end{table*}

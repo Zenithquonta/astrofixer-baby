@@ -1,0 +1,78 @@
+\section{What AstroFixxer Implements}
+\label{sec:system}
+
+\subsection{Origin, licence and scope}
+
+AstroFixxer began as a web application derived from AstroHopper~\cite{astrohopper, astrofixxerweb}. Because AstroHopper is GPLv3, the Android port is GPLv3 as well, and its source is public~\cite{astrofixxerandroid}. The Android version keeps AstroHopper's pointing mathematics and adds an offline catalogue, events, a voice assistant and plate solving. It targets Android 8.0 (API level 26) and later.
+
+\subsection{Architecture}
+
+The app is written in Kotlin with Jetpack Compose. It is a single Gradle module with three layers. The astronomy layer (\texttt{astro/}) holds coordinates, catalogues, events, satellite passes and the plate solver, and it has no Android imports, so it runs under plain JVM unit tests. The interface layer (\texttt{ui/}) holds the screen state and the Compose screens; it also has no Android imports, which lets the same code run in a Compose Desktop test harness. Only \texttt{MainActivity} touches Android: sensors, location, speech, preferences and asset loading. The project deliberately avoids a dependency-injection framework, a database and a networking library, since everything the app needs ships in its assets.
+
+\subsection{Offline data}
+\label{sec:data}
+
+A Python importer converts Stellarium's data files into the app's assets at build time. The main catalogue holds 93,997 deep-sky objects from Stellarium's catalogue and 8,913 stars from the HYG v3 database~\cite{hyg} with their B$-$V colour indices. It also holds the modern and Indian sky cultures and 781 IAU constellation boundary edges. The boundaries are published for the 1875 equinox, so the importer precesses them to J2000 with the IAU 1976 model~\cite{lieske1977}; the result agrees with astropy~\cite{astropy2022} to 0.37 arcseconds. Comet and asteroid orbital elements and meteor shower data also come from Stellarium, and eclipses come from NASA's published tables.
+
+For plate solving, the importer decodes Stellarium's binary star catalogues, which are built from Gaia DR3~\cite{gaia2023} and Hipparcos~\cite{perryman1997}. It propagates each star from the catalogue epoch to J2000 using its proper motion and keeps 579,984 stars brighter than magnitude 10.5. Each star is stored in 5 bytes, sorted into declination bands and right-ascension cells so that a cone around a pointing can be read without scanning the file. The asset is 2.94 MB. Cross-matched against HYG, the 4,969 stars brighter than magnitude 6 have a median position difference of 0.046 arcseconds.
+
+\subsection{Coordinate model}
+\label{sec:core}
+
+Planet positions come from VSOP87~\cite{bretagnon1988} with light time, aberration, precession and a truncated IAU 2000B nutation series, ported from the web application. Satellite passes use SGP4~\cite{vallado2006}.
+
+The web code converted catalogue positions to the local horizon with the Earth rotation angle applied to J2000 coordinates and no precession. Because the Earth rotation angle omits the accumulated precession in right ascension that Greenwich sidereal time contains, this formula happens to cancel most of the precession in right ascension. The part that does not cancel, the change in declination, grows by about 20 arcseconds a year. We measured it against astropy for 12 bright stars on 4 dates and at 3 sites (New Delhi, Sydney and Troms\o), which gives 66 cases above 5 degrees altitude. The worst error was 801 arcseconds.
+
+The corrected model applies each term once. A J2000 unit vector $\mathbf{r}_0$ is rotated to the mean equator of date with the IAU 1976 angles~\cite{lieske1977},
+\begin{equation}
+\mathbf{r} = R_3(-z)\,R_2(\theta)\,R_3(-\zeta)\,\mathbf{r}_0 ,
+\end{equation}
+and the hour angle is taken from Greenwich mean sidereal time, $h = \mathrm{GMST} + \lambda - \alpha$, where $\lambda$ is the observer's east longitude and $\alpha$ the right ascension of date. The inverse transformation, used to report where the telescope points, applies the transpose. Nutation (up to 17 arcseconds) and annual aberration (up to 20 arcseconds) are left out on purpose, since the narrowest eyepiece field in use is at least 15 arcminutes across. The worst of the 66 cases is now 28 arcseconds, and the unit tests fail if either correction is applied twice. The precession matrix is cached per time step, because the sky view converts thousands of stars in each frame.
+
+\subsection{Alignment and guidance}
+
+The phone's rotation-vector sensor gives the orientation of the phone, from which the app derives the direction of the telescope axis. The observer centres a bright star in the eyepiece and selects it. The app then computes a rotation that moves its predicted pointing onto the star, in azimuth first and then in altitude, following AstroHopper~\cite{astrohopper}. For a chosen target the app shows the remaining altitude and azimuth, or right ascension and declination for an equatorial mount, together with a bullseye that fills when the target lies inside the eyepiece's true field. The true field is computed from the eyepiece's apparent field and the focal lengths of the eyepiece and the telescope.
+
+At the time of writing, a revised alignment flow is being implemented. It asks for the telescope type, mount and phone placement on first launch. The observer drags the map until the chosen star sits under a fixed centre marker and then confirms. A second star can be added to check and refine the alignment. Section~\ref{sec:review} lists what of this has been tested.
+
+\subsection{On-device plate solver}
+\label{sec:solver}
+
+The solver is about 1,200 lines of Kotlin with no native code. It first estimates the image background on a coarse grid and the noise from the median absolute deviation. It then marks pixels about five standard deviations above the background and groups them into connected blobs. Each star position is a flux-weighted centroid, and its elongation comes from second moments. Single hot pixels and saturated regions are discarded. The image is rejected as too bright, trailed or nearly empty before any matching is tried, and the user is told which case applies.
+
+The pixel scale is known within a range from the telescope and eyepiece settings or from the phone camera's focal length. The solver therefore matches triangles of the brightest detected stars against catalogue triangles using real angular side lengths. The magnitude limit is chosen so that the catalogue offers about one to three times as many stars as were detected. Each candidate match gives a similarity transform with a possible mirror flip in a gnomonic projection. The solver projects all catalogue stars in the field, counts detections that land within the centroid tolerance, and refines the fit by least squares.
+
+A wrong answer would send the observer to the wrong part of the sky, so acceptance is strict. A solution needs at least six matched stars spread over at least a quarter of the frame, and a scale inside the hinted range. It also needs a false-alarm probability below $10^{-6}$ after multiplying by the number of hypotheses tried. The false-alarm probability is the binomial chance that random stars at the observed density would match as many detections. Real solutions in the tests reached probabilities between $10^{-20}$ and $10^{-120}$.
+
+Table~\ref{tab:solver} summarises the synthetic evaluation. The test images are rendered from the same catalogues with Gaussian star profiles, Poisson and read noise, a sky gradient, hot pixels, 10\% of stars removed and a few false stars added. Eyepiece images black out everything outside a 1-degree circle, as a phone held to an eyepiece records it. Every negative case (blank, noise, saturated and trailed images, wrong scale hints, and random-star fields) returned a failure with the matching reason.
+
+\begin{table}[t]
+\centering
+\caption{Plate solver on synthetic images (JVM, desktop CPU)}
+\label{tab:solver}
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+Case & Solved & Centre error & Time \\
+\midrule
+Wide $60^\circ\times45^\circ$, blind & 5/5 & 2--11$''$ & 0.14--0.37 s \\
+Wide, hint $15^\circ$ off & 5/5 & 1--8$''$ & 0.16--0.49 s \\
+Wide, mirrored, blind & 5/5 & 3--11$''$ & $\approx$0.2 s \\
+Wide, 1--2\% lens distortion & 4/4 & 15--44$''$ & $\approx$0.15 s \\
+$12^\circ$ field, blind & 2/2 & $\approx$1$''$ & 0.16--0.5 s \\
+$5^\circ$ field, hinted & 3/3 & 0.1--0.6$''$ & $\approx$0.25 s \\
+$1^\circ$ eyepiece, hint $1^\circ$ off & 5/5 & 0.1--0.5$''$ & 0.15--0.19 s \\
+\midrule
+Negative cases & 0 wrong & n/a & 1--8 s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A longer campaign outside the unit tests solved 60 of 60 wide blind fields at limiting magnitudes 4.2 to 5.5. It solved every one of 47 eyepiece fields holding nine or more catalogue stars, and it accepted none of 140 random-star images. Eyepiece fields with fewer than about six stars brighter than magnitude 10.5 cannot be solved; the solver returns ``no match'' for them.
+
+\subsection{Interface}
+
+The sky view follows Stellarium's look, with an atmosphere, the Milky Way, landscapes, light pollution on the Bortle scale, constellation art and star colours. It can also draw the equatorial grid, ecliptic, meridian and constellation boundaries. A night mode draws everything in dim red to preserve dark adaptation. Object pages show a rise, transit and set summary and an altitude graph for the night with twilight shading. An Events screen lists meteor showers, conjunctions, eclipses, lunar occultations and satellite passes computed on the phone. An offline voice assistant answers spoken questions in English and Hindi through Android's speech recogniser, and the whole interface is available in Hindi.
+
+\subsection{Verification and release}
+
+The astronomy layer has JVM unit tests: golden values from the original web code, the astropy reference cases, and the plate-solver suite, 66 tests in all at the time of writing. The importer has 19 tests. The interface is tested in a Compose Desktop harness that drives the real screens with simulated touch at a 360 by 780 dp phone size. Before the current round of work it ran 38 user-journey and stress tests. An automated audit also rendered 192 screen variants (English and Hindi, day and night, two widths) and checked touch-target size, clipped or overlapping text and contrast, with no findings. Every push to the repository runs the tests, builds the APK, checks that the sky data is inside it and scans the history for leaked secrets with gitleaks. A build from the main branch is published as a downloadable APK.

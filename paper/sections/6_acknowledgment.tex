@@ -1,0 +1,35 @@
+\section*{Acknowledgment}
+
+AstroFixxer is built on the work of others. Artyom Beilis wrote AstroHopper~\cite{astrohopper}, whose pointing code and licence AstroFixxer inherits, and the AstroFixxer web application~\cite{astrofixxerweb} was the starting point for the Android port. All sky data comes from the Stellarium project~\cite{zotti2021}. The solver's star list derives from ESA's Gaia DR3~\cite{gaia2023} and Hipparcos~\cite{perryman1997} catalogues as packaged by Stellarium, and the bright-star catalogue from the HYG database~\cite{hyg}. Greg Miller's public-domain VSOP87 series and CPReduce code supply the planet positions, NASA's Goddard Space Flight Center publishes the eclipse tables, and CelesTrak provides the satellite orbits. Table~\ref{tab:credits} lists every third-party component in the project and its licence.
+
+\begin{table}[h]
+\centering
+\caption{Third-party repositories, data and libraries}
+\label{tab:credits}
+\small
+\begin{tabular}{@{}p{0.52\columnwidth} p{0.38\columnwidth}@{}}
+\toprule
+Component & Licence \\
+\midrule
+AstroHopper / skyhopper (A.~Beilis) & GPLv3 \\
+AstroFixxer web app (upstream) & GPLv3 \\
+Stellarium deep-sky catalogue, names, meteor showers, minor-body orbits, star catalogues & GPL-2.0-or-later \\
+Stellarium sky cultures (modern, Indian) & CC BY-SA 4.0 \\
+Stellarium constellation illustrations & Free Art License \\
+Gaia DR3 (ESA), via Stellarium & CC BY-SA 3.0 IGO \\
+Hipparcos (ESA), via Stellarium & ESA \\
+HYG v3 star database & CC BY-SA \\
+VSOP87 Java series and CPReduce (G.~Miller) & Public domain \\
+NASA eclipse tables (F.~Espenak, NASA GSFC) & Public domain \\
+CelesTrak orbital elements & CelesTrak terms \\
+Kotlin, Jetpack Compose, AndroidX Activity & Apache 2.0 \\
+Compose Multiplatform (desktop test harness) & Apache 2.0 \\
+Gradle build tool & Apache 2.0 \\
+JUnit 4 & EPL 1.0 \\
+Robolectric android-all (compile check) & Apache 2.0 \\
+JSON-java (org.json) & See project \\
+astropy (reference values only)~\cite{astropy2022} & BSD 3-Clause \\
+gitleaks (secret scanning in CI) & MIT \\
+\bottomrule
+\end{tabular}
+\end{table}
